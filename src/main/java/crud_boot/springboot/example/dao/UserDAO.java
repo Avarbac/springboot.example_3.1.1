@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface UserDAO {
 
     User getUserById(Long id);
@@ -14,9 +13,9 @@ public interface UserDAO {
 
     void saveUser(User user);
 
-    void deleteUser(Long id);
+    void deleteUser(User user);
 
-    void updateUser(User user, Long id);
+    void updateUser(User user);
 
     User getUserByName(String name);
 }

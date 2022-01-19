@@ -32,18 +32,19 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(User user) {
 
-        manager.remove(getUserById(id));
+        manager.remove(user);
     }
 
     @Override
-    public void updateUser(User user, Long id) {
-        User updatedUser = getUserById(id);
+    public void updateUser(User user) {
+        User updatedUser = user;
         updatedUser.setName(user.getName());
         updatedUser.setSurname(user.getSurname());
         updatedUser.setAge(user.getAge());
         user.setRoles(updatedUser.getRoles());
+
         manager.merge(updatedUser);
     }
 

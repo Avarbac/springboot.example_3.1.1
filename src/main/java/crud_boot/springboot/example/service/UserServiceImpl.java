@@ -2,7 +2,10 @@ package crud_boot.springboot.example.service;
 
 import crud_boot.springboot.example.dao.UserDAO;
 import crud_boot.springboot.example.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -11,30 +14,42 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserDAO userDAO) {
+    @Autowired
+    public UserServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User getUserById(Long id) {
         return userDAO.getUserById(id);
     }
+
     @Override
     public List<User> getAllUsers() {
         return userDAO.getAllUsers();
     }
+
     @Override
+    @Transactional
     public void saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAO.saveUser(user);
     }
+
     @Override
-    public void deleteUser(Long id) {
-        userDAO.deleteUser(id);
+    @Transactional
+    public void deleteUser(User user) {
+        userDAO.deleteUser(user);
     }
+
     @Override
-    public void updateUser(User user, Long id) {
-        userDAO.updateUser(user,id);
+    @Transactional
+    public void updateUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userDAO.updateUser(user);
     }
 
     @Override
